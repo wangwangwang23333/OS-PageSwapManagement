@@ -8,9 +8,10 @@
           <span v-if="appears">第{{page}}页</span>
         </div>
       </template>
+      <span v-if="firstAppear" style="color: #b3b5bb">空</span>
       <div v-for="nx in 10" :key="nx" >
         <transition name="el-fade-in" :ref=" el => { if(el) box[nx-1] = el}">
-          <div class="transition-box"  :style="'background-color: '+colorNow" :ref=" el => { if(el) divs[nx-1] = el}"  v-show="appears">{{nx}}</div>
+          <div class="transition-box"  :style="'background-color: '+colorNow" :ref=" el => { if(el) divs[nx-1] = el}"  v-show="appears">{{nx-1}}</div>
         </transition>
       </div>
     </el-card>
@@ -35,6 +36,7 @@ export default {
       redcolor:'#d43346',
       curcolor:'#6db2fa',
       spacer: h(ElDivider, { direction: 'vertical' }),
+      firstAppear:true
     };
   },
   watch:{
@@ -44,6 +46,7 @@ export default {
   methods:{
     appear(){
       this.appears=!this.appears;
+      this.firstAppear=false;
     },
 
     move(index){

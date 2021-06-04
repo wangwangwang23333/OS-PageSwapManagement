@@ -3,13 +3,12 @@
 
     <el-table
         :data="tableData"
-        stripe
+
         highlight-current-row
         @current-change="handleCurrentChange"
-        height="250"
-        max-height="250"
-        ref="table">
-
+        height="360px"
+        ref="table"
+        empty-text="暂无已执行过的指令">
       <el-table-column
           prop="index"
           label=""

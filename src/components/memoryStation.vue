@@ -45,6 +45,7 @@ export default {
     blockEmpty(){
       for(let i=0;i<this.divs.length;++i){
         this.divs[i].disapppear();
+        this.divs[i].firstAppear=true;
       }
       this.empty=true;
     }
