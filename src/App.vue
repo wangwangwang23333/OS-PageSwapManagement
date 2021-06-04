@@ -296,6 +296,9 @@ export default {
           this.$refs.memoryStation.memoryAppear(this.innerPage.length - 1);
           this.$refs.memoryStation.changePage(this.innerPage.length-1,nextInstruct['page']);
           nextInstruct['outpage'] = '-';
+
+          //变红
+          this.$refs.memoryStation.move(this.innerPage.length-1,nextInstruct['placeInPage']);
         }
         //已经满了，需要调出页
         else {
@@ -314,7 +317,11 @@ export default {
           nextInstruct['outpage'] = this.innerPage[outPage];
           this.innerPage[outPage]=nextInstruct['page'];
 
+          //变红
+          this.$refs.memoryStation.move(outPage,nextInstruct['placeInPage']);
         }
+
+
 
         //更新LRU表
         for(let i=0;i<this.LRUTable.length;++i){
@@ -323,6 +330,7 @@ export default {
             break;
           }
         }
+
       }
 
       //加入新数据
@@ -332,11 +340,32 @@ export default {
     },
 
     keepInstruct(){
+      if(this.curInstruct==this.sumInstruction){
+        //提示信息
+        ElMessage.success({
+          message: '全部320条指令已执行完毕',
+          type: 'success'
+        });
+        //关闭计时器
+        if(this.timerStart){
+          clearInterval(this.timer);
+          this.timerStart=false;
+        }
+        return;
+      }
       if(this.timerStart){
         clearInterval(this.timer);
         this.timerStart=false;
+        ElMessage.success({
+          message: '已关闭连续执行',
+          type: 'success'
+        });
       }
       else{
+        ElMessage.success({
+          message: '已开始连续执行',
+          type: 'success'
+        });
         this.timerStart=true;
         this.timer=setInterval(this.nextInstruct,10);
       }
@@ -368,10 +397,9 @@ export default {
 
     instructInfo(){
 
-      this.$alert('本项目是软件学院2021年春季学期操作系统课程第二次【内存管理】项目<br>' +
+      this.$alert('本项目是软件学院2021年春季学期操作系统课程第二次【内存管理】项目<br>'+
           '在左侧设置好<b>页面置换算法</b>和<b>执行顺序</b>后，即可通过<b>单步执行</b>一次执行一条指令或者<b>连续执行</b>直到指令执行结束。' +
-          '<br>同时，在左侧可以观察<b>缺页数</b>和<b>缺页数</b><br>'+
-          '项目通过vue框架完成', '项目说明', {
+          '<br>同时，在左侧可以观察<b>缺页数</b>和<b>缺页数</b>', '项目说明', {
         confirmButtonText: '确定',
         dangerouslyUseHTMLString:true
       });
